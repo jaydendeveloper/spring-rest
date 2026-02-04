@@ -1,16 +1,22 @@
 package spring.rest.test.demo.models;
 
 public class User {
+    private final int id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(int id, String firstName, String lastName, String email, String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -51,6 +57,6 @@ public class User {
 
     @Override
     public String toString(){
-        return this.getFirstName() + " " + this.getLastName() + " " + this.getEmail() + " " + this.getPassword();
+        return this.getId() + " " + this.getFirstName() + " " + this.getLastName() + " " + this.getEmail() + " " + this.getPassword();
     }
 }
