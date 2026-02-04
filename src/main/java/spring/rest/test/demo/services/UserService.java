@@ -35,13 +35,13 @@ public class UserService {
     public User getUserById(int id){
         List<User> users = userRepository.getUsers();
 
-        User user = users.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
+        Optional<User> user = users.stream().filter(u -> u.getId() == id).findFirst();
 
-        if (user == null) {
+        if (user.isEmpty()) {
             throw new UserNotFoundException();
         }
 
-        return user;
+        return user.get();
     }
 
     public int getNextId() {
