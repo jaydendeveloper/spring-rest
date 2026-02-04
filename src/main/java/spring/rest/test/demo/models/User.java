@@ -1,11 +1,21 @@
 package spring.rest.test.demo.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class User {
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+
+    public User() {}
 
     public User(int id, String firstName, String lastName, String email, String password) {
         this.id = id;
@@ -37,6 +47,10 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setFirstName(String firstName) {
