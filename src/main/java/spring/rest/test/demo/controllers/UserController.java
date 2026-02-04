@@ -47,9 +47,8 @@ public class UserController {
         String lastName = payload.getLastName();
         String email = payload.getEmail();
         String password = payload.getPassword();
-        int id = userService.getNextId();
-
-        User user = new User(id, firstName, lastName, email, password);
+        
+        User user = new User(0, firstName, lastName, email, password);
 
         userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
