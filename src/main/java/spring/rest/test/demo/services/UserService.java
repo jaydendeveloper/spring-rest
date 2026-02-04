@@ -1,6 +1,7 @@
 package spring.rest.test.demo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -59,24 +60,25 @@ public class UserService {
     public User updateUser(int id, User updatedUser) {
         List<User> users = userRepository.getUsers();
 
-        User existingUser = users.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
+        Optional<User> optionalUser = users.stream().filter(u -> u.getId() == id).findFirst();
 
-        if (existingUser == null) {
+        if (optionalUser.isEmpty()) {
             throw new UserNotFoundException();
         }
 
-        if (updatedUser.getFirstName() != null) {
-            existingUser.setFirstName(updatedUser.getFirstName());
-        }
-        if (updatedUser.getLastName() != null) {
-            existingUser.setLastName(updatedUser.getLastName());
-        }
-        if (updatedUser.getEmail() != null) {
-            existingUser.setEmail(updatedUser.getEmail());
-        }
-        if (updatedUser.getPassword() != null) {
-            existingUser.setPassword(updatedUser.getPassword());
-        }
+        User existingUser = optionalUser.get();
+        Optional<String> firstNameOpt = Optional.ofNullable(updatedUser.getFirstName());
+
+        firstNameOpt.ifPresent(firstName -> existingUser.setFirstName(firstName));
+
+        Optional<String> lastNameOpt = Optional.ofNullable(updatedUser.getLastName());
+        lastNameOpt.ifPresent(existingUser::setLastName);
+
+        Optional<String> emailOpt = Optional.ofNullable(updatedUser.getEmail());
+        emailOpt.ifPresent(existingUser::setEmail);
+
+        Optional<String> passwordOpt = Optional.ofNullable(updatedUser.getPassword());
+        passwordOpt.ifPresent(existingUser::setPassword);
 
         return existingUser;
     }
