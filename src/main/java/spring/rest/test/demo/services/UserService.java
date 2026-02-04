@@ -69,7 +69,7 @@ public class UserService {
         User existingUser = optionalUser.get();
         Optional<String> firstNameOpt = Optional.ofNullable(updatedUser.getFirstName());
 
-        firstNameOpt.ifPresent(firstName -> existingUser.setFirstName(firstName));
+        firstNameOpt.ifPresent(existingUser::setFirstName);
 
         Optional<String> lastNameOpt = Optional.ofNullable(updatedUser.getLastName());
         lastNameOpt.ifPresent(existingUser::setLastName);
