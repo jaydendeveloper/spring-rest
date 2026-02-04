@@ -8,23 +8,23 @@ import org.springframework.stereotype.Service;
 import spring.rest.test.demo.exceptions.UserCreationException;
 import spring.rest.test.demo.exceptions.UserDeletionException;
 import spring.rest.test.demo.exceptions.UserNotFoundException;
+import spring.rest.test.demo.interfaces.UserDataAccess;
 import spring.rest.test.demo.models.User;
-import spring.rest.test.demo.repositories.UserRepository;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private final UserDataAccess userDataAccess;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+     public UserService(UserDataAccess userDataAccess) {
+        this.userDataAccess = userDataAccess;
     }
 
     public List<User> getUsers() {
-        return userRepository.getUsers();
+        return userDataAccess.findAll();
     }
 
     public User getRandomUser(){
-        List<User> users = userRepository.getUsers();
+        List<User> users = userDataAccess.findAll();
         if (users.isEmpty()) {
             return null;
         }
@@ -33,9 +33,7 @@ public class UserService {
     }
 
     public User getUserById(int id){
-        List<User> users = userRepository.getUsers();
-
-        Optional<User> user = users.stream().filter(u -> u.getId() == id).findFirst();
+        Optional<User> user = userDataAccess.findById(id);
 
         if (user.isEmpty()) {
             throw new UserNotFoundException();
@@ -44,13 +42,10 @@ public class UserService {
         return user.get();
     }
 
-    public int getNextId() {
-        return userRepository.getNextId();
-    }
 
     public User createUser(User user) {
         try {
-            userRepository.addUser(user);
+            userDataAccess.save(user);
         } catch (Exception e) {
             throw new UserCreationException("Failed to create user");
         }
@@ -58,9 +53,7 @@ public class UserService {
     }
 
     public User updateUser(int id, User updatedUser) {
-        List<User> users = userRepository.getUsers();
-
-        Optional<User> optionalUser = users.stream().filter(u -> u.getId() == id).findFirst();
+        Optional<User> optionalUser = userDataAccess.findById(id);
 
         if (optionalUser.isEmpty()) {
             throw new UserNotFoundException();
@@ -80,12 +73,14 @@ public class UserService {
         Optional<String> passwordOpt = Optional.ofNullable(updatedUser.getPassword());
         passwordOpt.ifPresent(existingUser::setPassword);
 
+        userDataAccess.save(existingUser);
+
         return existingUser;
     }
 
     public void deleteUser(int id){
         try {
-            userRepository.deleteUser(id);
+            userDataAccess.deleteById(id);
         } catch (Exception e) {
             throw new UserDeletionException();
         }
