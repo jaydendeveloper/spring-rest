@@ -27,4 +27,10 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Run tests
-        run: mvnw -B test
+        run: |
+          if [ -f ./mvnw ]; then
+            chmod +x ./mvnw
+            ./mvnw -B test
+          else
+            mvn -B test
+          fi
