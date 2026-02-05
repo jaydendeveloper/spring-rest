@@ -26,6 +26,11 @@ public class InMemoryUserRepository implements UserDataAccess {
     public List<User> findAll() {
         return users;
     }
+    
+    @Override
+    public int countUsers() {
+        return users.size();
+    }
 
     public int getNextId() {
         if (users.isEmpty()) {
