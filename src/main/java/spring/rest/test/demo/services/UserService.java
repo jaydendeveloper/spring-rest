@@ -42,6 +42,10 @@ public class UserService {
         return user.get();
     }
 
+    public int countUsers(){
+        return userDataAccess.countUsers();
+    }
+
 
     public User createUser(User user) {
         try {
