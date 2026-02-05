@@ -10,4 +10,5 @@ public interface UserDataAccess {
     Optional<User> findById(int id);
     User save(User user);
     void deleteById(int id);
+    int countUsers();
 }
