@@ -1,6 +1,7 @@
 package spring.rest.test.demo.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,11 @@ public class UserController {
     @GetMapping("users/{id}")
     public User getUserById(@PathVariable int id){
         return userService.getUserById(id);
+    }
+    
+    @GetMapping("users/count")
+    public Map<String, Integer> countUsers() {
+        return Map.of("count", userService.countUsers());
     }
 
     @PostMapping("/users")
