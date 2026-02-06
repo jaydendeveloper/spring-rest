@@ -6,11 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import spring.rest.test.demo.interfaces.UserDataAccess;
 import spring.rest.test.demo.models.User;
 import spring.rest.test.demo.repositories.InMemoryUserRepository;
 
+@ActiveProfiles("test")
 @SpringBootTest
 class UserRepositoryTests {
 
